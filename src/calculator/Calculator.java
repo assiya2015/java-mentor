@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Calculator {
-    private int result = 0;
+    private String result;
     List<Integer> arabNumbers = new ArrayList<>();
     private int number1;
     private int number2;
-    char operation;
+    private String numerals;
+    RomanNumeral roman;
 
-    public int calculate(String input) throws Exception {
+    public String calculate(String input) throws Exception {
         arabNumbers = getListNumbers(input);
         number1 = arabNumbers.get(0);
         number2 = arabNumbers.get(1);
@@ -19,16 +20,19 @@ public class Calculator {
             throw new Exception("You can input numbers from 1 to 10");
         }
         if (input.contains("+")) {
-            result = number1 + number2;
+            result = String.valueOf(number1 + number2);
         }
         if (input.contains("*")) {
-            result = number1 * number2;
+            result = String.valueOf(number1 * number2);
         }
         if (input.contains("-")) {
-            result = number1 - number2;
+            result = String.valueOf(number1 - number2);
         }
         if (input.contains("/")) {
-            result = number1 / number2;
+            result = String.valueOf(number1 / number2);
+        }
+        if (numerals.equals("roman")){
+            result=roman.arabicToRoman(Integer.parseInt(result));
         }
         return result;
     }
@@ -49,11 +53,13 @@ public class Calculator {
             if (isArabic(num1) && isArabic(num2)) {
                 arabNumbers.add(Integer.parseInt(num1));
                 arabNumbers.add(Integer.parseInt(num2));
+                numerals="arabic";
             } else {
 
                 if (!isArabic(num1) && !isArabic(num2)) {
-                    arabNumbers.add(toConvertToArabic(num1.toUpperCase()));
-                    arabNumbers.add(toConvertToArabic(num2.toUpperCase()));
+                    arabNumbers.add(roman.romanToArabic(num1.toUpperCase()));
+                    arabNumbers.add(roman.romanToArabic(num2.toUpperCase()));
+                    numerals="roman";
                 } else {
                     throw new Exception("You can input simultaniously only arabic or roman numbers");
                 }
@@ -73,20 +79,5 @@ public class Calculator {
         return isArabic;
     }
 
-    private int toConvertToArabic(String number) {
-        return switch (number) {
-            case "I" -> 1;
-            case "II" -> 2;
-            case "III" -> 3;
-            case "IV" -> 4;
-            case "V" -> 5;
-            case "VI" -> 6;
-            case "VII" -> 7;
-            case "VIII" -> 8;
-            case "IX" -> 9;
-            case "X" -> 10;
-            default -> -1;
-        };
-    }
 }
 
